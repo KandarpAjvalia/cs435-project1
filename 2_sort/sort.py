@@ -7,6 +7,8 @@ class Node:
         self.right = None
 
 
+outputList = []
+
 def insertRec(currentNode, nodeToInsert):
     if currentNode is None:
         return nodeToInsert
@@ -24,14 +26,19 @@ def inOrder(root):
         outputList.append(root.data)
         inOrder(root.right)
 
+def sort(unsortedList):
+    root = insertRec(None, Node(unsortedList[0]))
+
+    for i in range(1, len(unsortedList)):
+        insertRec(root, Node(unsortedList[i]))
+
+    inOrder(root)
+
+    return outputList
+
 
 unsortedList = [3, 6, 1, 9, 11, 2, 5, 4]
-root = insertRec(None, Node(unsortedList[0]))
 
-for i in range(1, len(unsortedList)):
-    insertRec(root, Node(unsortedList[i]))
+sort(unsortedList)
 
-outputList = []
-
-inOrder(root)
 print(*outputList)
