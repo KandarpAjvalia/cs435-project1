@@ -1,4 +1,11 @@
 import sys
+import time
+
+sys.path.append('../3_arr_ints')
+
+# print(sys.path)
+
+import arr_ints
 
 # creating a structure of node
 class Node:
@@ -297,74 +304,79 @@ def printBst(root):
         print(root.data, end=' ')
         printBst(root.right)
 
+randomArray = arr_ints.getRandomArray(10000)
+sortedArray = arr_ints.getSortedArray(10000)
 
-root = insertIter(root, Node(3))
-printBst(root)
-print()
+print('random:', randomArray)
+print('sorted:', sortedArray)
 
-insertIter(root, Node(1))
-printBst(root)
-print()
-
-insertIter(root, Node(2))
-printBst(root)
-print()
-
-insertIter(root, Node(4))
-printBst(root)
-print()
-
-insertIter(root, Node(7))
-printBst(root)
-print()
-
-insertIter(root, Node(9))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-deleteIter(root, Node(4))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-insertIter(root, Node(10))
-printBst(root)
-print()
-insertIter(root, Node(-1))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-insertIter(root, Node(11))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-insertIter(root, Node(-2))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-deleteIter(root, Node(-2))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-deleteIter(root, Node(-1))
-printBst(root)
-print()
-
-print('root: ', root.data)
-
-deleteIter(root, Node(2))
-printBst(root)
-print()
-
-print('root: ', root.data)
+# root = insertIter(root, Node(3))
+# printBst(root)
+# print()
+#
+# insertIter(root, Node(1))
+# printBst(root)
+# print()
+#
+# insertIter(root, Node(2))
+# printBst(root)
+# print()
+#
+# insertIter(root, Node(4))
+# printBst(root)
+# print()
+#
+# insertIter(root, Node(7))
+# printBst(root)
+# print()
+#
+# insertIter(root, Node(9))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# deleteIter(root, Node(4))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# insertIter(root, Node(10))
+# printBst(root)
+# print()
+# insertIter(root, Node(-1))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# insertIter(root, Node(11))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# insertIter(root, Node(-2))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# deleteIter(root, Node(-2))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# deleteIter(root, Node(-1))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
+#
+# deleteIter(root, Node(2))
+# printBst(root)
+# print()
+#
+# print('root: ', root.data)
