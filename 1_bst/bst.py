@@ -7,7 +7,7 @@ class Node:
         self.left = None
         self.right = None
 
-# Initializing root as null
+# Initializing node as null
 root = None
 
 
@@ -32,7 +32,7 @@ def insertRec(currentNode, nodeToInsert):
 # a function to insert a node in a bst iteratively
 def insertIter(root, nodeToInsert):
 
-    # if root is none, return pointer to the given node
+    # if node is none, return pointer to the given node
     if root is None:
          return nodeToInsert
 
@@ -117,9 +117,9 @@ def deleteIterHelper(currentNode):
 
     # if next biggest's left is empty but has right children, move child left or right
     if tempNode.right:
-        if tempNode.data < parent.data:
+        if tempNode.right.data < parent.data:
             parent.left = tempNode.right
-        elif tempNode.data > parent.data:
+        elif tempNode.right.data > parent.data:
             parent.right = tempNode.right
 
     # if there's no right node
@@ -136,11 +136,11 @@ def deleteIter(currentNode, nodeToDelete):
     parent = None
     global root
 
-    # check if given node(root) is empty
+    # check if given node(node) is empty
     if currentNode is None:
         return
 
-    # if root is to be deleted
+    # if node is to be deleted
     elif currentNode.data == nodeToDelete.data:
 
         # check left and right nodes if they are empty,
@@ -148,15 +148,15 @@ def deleteIter(currentNode, nodeToDelete):
         if currentNode.left is None and currentNode.right is None:
             root = None
 
-        # if there is a left child and no right child, root becomes left child
+        # if there is a left child and no right child, node becomes left child
         elif currentNode.left and currentNode.right is None:
             root = currentNode.left
 
-        # if there is a right child and no left child, root becomes right child
+        # if there is a right child and no left child, node becomes right child
         elif currentNode.left is None and currentNode.right:
             root = currentNode.right
 
-        # if there are two children of root, we make root the next bigger element of root as root
+        # if there are two children of node, we make node the next bigger element of node as node
         elif currentNode.left and currentNode.right:
             deleteIterHelper(currentNode)
         return
@@ -165,7 +165,7 @@ def deleteIter(currentNode, nodeToDelete):
     temp = currentNode
     deletionData = nodeToDelete.data
 
-    # if node is not a root, we just slide down to the node we want to delete
+    # if node is not a node, we just slide down to the node we want to delete
     while temp and temp.data != deletionData:
         parent = temp
         if deletionData < temp.data:
@@ -388,38 +388,32 @@ def printBst(root):
         printBst(root.right)
 
 
-root = insertRec(root, Node(2))
-insertRec(root, Node(1))
-insertRec(root, Node(4))
-insertRec(root, Node(5))
-insertRec(root, Node(6))
+root = insertRec(root, Node(4))
+insertRec(root, Node(2))
 insertRec(root, Node(7))
-insertRec(root, Node(8))
+insertRec(root, Node(1))
+insertRec(root, Node(3))
+insertRec(root, Node(9))
 
 printBst(root)
 print()
 
-deleteRec(root, Node(2))
+deleteRec(root, Node(4))
 printBst(root)
 print()
 
-deleteRec(root, Node(1))
+deleteRec(root, Node(3))
 printBst(root)
 print()
-
-deleteRec(root, Node(8))
-printBst(root)
-print()
-
-
-print('min Rec', findMinRec(root))
-print('min Iter', findMinIter(root))
-
-print('max Rec', findMaxRec(root))
-print('max Iter', findMaxIter(root))
-
-print('next iter', findNextIter(root, 5).data)
-print('next Rec', findNextRec(root, 5).data)
-
-print('prev rec', findPrevRec(root, 5).data)
-print('prev iter', findPrevIter(root, 5).data)
+#
+# print('min Rec', findMinRec(root))
+# print('min Iter', findMinIter(root))
+#
+# print('max Rec', findMaxRec(root))
+# print('max Iter', findMaxIter(root))
+#
+# print('next iter', findNextIter(root, 5).data)
+# print('next Rec', findNextRec(root, 5).data)
+#
+# print('prev rec', findPrevRec(root, 5).data)
+# print('prev iter', findPrevIter(root, 5).data)

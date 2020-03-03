@@ -16,5 +16,5 @@ def getSortedArray(n):
         returnList.append(i)
     return returnList
 
-print(*getRandomArray(10))
-print(*getSortedArray(10))
+print('Random array:', *getRandomArray(10))
+print('Sorted array:', *getSortedArray(10))
