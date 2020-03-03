@@ -8,6 +8,9 @@ class Node:
         self.left = None
         self.right = None
 
+    def __str__(self):
+        return 'node data: {}'.format(self.data)
+
 # Initializing node as null
 root = None
 
@@ -208,19 +211,29 @@ def deleteIter(currentNode, nodeToDelete):
                 return
         if not isBalanced(currentNode):
             root = balance(currentNode)
+            root.height = calcHeight(root)
         return
 
 
     temp = currentNode
     deletionData = nodeToDelete.data
 
+    stackSim = []
+    path = []
+
     # if node is not a node, we just slide down to the node we want to delete
     while temp and temp.data != deletionData:
         parent = temp
+
+        stackSim.append(parent)
+
         if deletionData < temp.data:
             temp = temp.left
+            path.append('L')
+
         elif deletionData > temp.data:
             temp = temp.right
+            path.append('R')
 
     # check left and right nodes if they are empty,
     # set parent's left or right as None depending on condition
@@ -249,10 +262,32 @@ def deleteIter(currentNode, nodeToDelete):
         deleteIterHelper(temp)
         if not isBalanced(currentNode):
             root = balance(currentNode)
+            root.height = calcHeight(root)
             return
 
-    if not isBalanced(currentNode):
-        root = balance(currentNode)
+    isFirst = True
+    path.pop()
+
+    prev = None
+    print(*stackSim)
+    print(path)
+    # check balance factor for each parent
+    for node in stackSim[::-1]:
+        if not isFirst:
+            if path.pop() is 'R':
+                node.right = prev
+            else:
+                node.left = prev
+        # print('bf of {} is {}'.format(node, balanceFactor(node)))
+        if not isBalanced(node):
+            node = balance(node)
+        prev = node
+        isFirst = False
+        node.height = calcHeight(node)
+    # print('prev data', prev.data)
+    root = prev
+    # return pointer to the inserted element's parent
+    return parent
 
 
 # print bst in order
@@ -301,12 +336,20 @@ print()
 insertIter(root, Node(-1))
 printBst(root)
 print()
+
+print('root: ', root.data)
+
 insertIter(root, Node(11))
 printBst(root)
 print()
+
+print('root: ', root.data)
+
 insertIter(root, Node(-2))
 printBst(root)
 print()
+
+print('root: ', root.data)
 
 deleteIter(root, Node(-2))
 printBst(root)
@@ -314,3 +357,14 @@ print()
 
 print('root: ', root.data)
 
+deleteIter(root, Node(-1))
+printBst(root)
+print()
+
+print('root: ', root.data)
+
+deleteIter(root, Node(2))
+printBst(root)
+print()
+
+print('root: ', root.data)
