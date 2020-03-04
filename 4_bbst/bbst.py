@@ -1,11 +1,14 @@
 import sys
 import time
 
+
 sys.path.append('../3_arr_ints')
+sys.path.append('../1_bst')
 
 # print(sys.path)
 
 import arr_ints
+import bst
 
 # creating a structure of node
 class Node:
@@ -20,6 +23,12 @@ class Node:
 
 # Initializing node as null
 root = None
+travCount = 0
+
+
+def incrementTrav():
+    global travCount
+    travCount += 1
 
 
 def calcHeight(node):
@@ -54,7 +63,7 @@ def isBalanced(node):
 
 
 def leftRotate(node):
-    print('left rotate on: ', node.data)
+    # print('left rotate on: ', node.data)
     temp = node.right
     node.right = temp.left
     temp.left = node
@@ -65,7 +74,7 @@ def leftRotate(node):
     return temp
 
 def rightRotate(node):
-    print('right rotate on: ', node.data)
+    # print('right rotate on: ', node.data)
 
     temp = node.left
     node.left = temp.right
@@ -77,7 +86,7 @@ def rightRotate(node):
     return temp
 
 def balance(node):
-    print('balancing')
+    # print('balancing')
 
     bf = balanceFactor(node)
 
@@ -122,6 +131,7 @@ def insertIter(rootGiven, nodeToInsert):
         else:
             path.append('R')
             curr = curr.right
+        incrementTrav()
 
     # insert on left if element is smaller than parent,
     # else insert to the right
@@ -166,9 +176,9 @@ def deleteIterHelper(currentNode):
 
     currentNode.data = tempNode.data
 
-    print('parent node: ', parent.data)
-
-    print('temp node: ', tempNode.data)
+    # print('parent node: ', parent.data)
+    #
+    # print('temp node: ', tempNode.data)
 
     # if next biggest's left is empty but has right children, move child left or right
     if tempNode.left:
@@ -297,86 +307,165 @@ def deleteIter(currentNode, nodeToDelete):
     return parent
 
 
-# print bst in order
-def printBst(root):
-    if root:
-        printBst(root.left)
-        print(root.data, end=' ')
-        printBst(root.right)
+# an iterative function to find the next node greater than a given node
+def findNextIter(currentNode, data):
+    temp = currentNode
 
+    # slide down to the node we want to find next of
+    while temp and temp.data != data:
+        if data < temp.data:
+            temp = temp.left
+        elif data > temp.data:
+            temp = temp.right
+
+    # follow path node->right then node->right->leftmost
+    slider = None
+    if temp.right:
+        slider = temp.right
+        while slider.left:
+            slider = slider.left
+        return slider
+
+    # if right node does not exist
+    while currentNode:
+        if temp.data < currentNode.data:
+            slider = currentNode
+            currentNode = currentNode.left
+        elif temp.data > currentNode.data:
+            currentNode = currentNode.right
+        else:
+            break
+
+    return slider
+
+
+# an iterative function to find the previous node smaller than a given node
+def findPrevIter(currentNode, data):
+    if currentNode is None:
+        return currentNode
+
+    prevNode = None
+    temp = currentNode
+
+    # slide down to the node we want to find prev of
+    while temp and temp.data != data:
+        if data < temp.data:
+            temp = temp.left
+        elif data > temp.data:
+            prevNode = temp
+            temp = temp.right
+
+    # follow path node->left then node->left->rightmost
+    if temp and temp.left:
+        slider = temp.left
+        while slider.right:
+            slider = slider.right
+        return slider
+    return prevNode
+
+
+# an iterative function to find the min of bst
+def findMinIter(currentNode):
+
+    # if given node is none
+    if currentNode is None:
+        return currentNode
+
+    # go all the way to the left of the tree and return that node's data
+    temp = currentNode
+    while temp.left:
+        temp = temp.left
+    return temp.data
+
+
+# an iterative function to find the min of bst
+def findMaxIter(currentNode):
+
+    # if given node is none
+    if currentNode is None:
+        return currentNode
+
+    # go all the way to the right of the tree and return that node's data
+    temp = currentNode
+    while temp.right:
+        temp = temp.right
+    return temp.data
+
+
+# print bst in order
+def printBbst(root):
+    if root:
+        printBbst(root.left)
+        print(root.data, end=' ')
+        printBbst(root.right)
+
+
+# Part 5a
+print('Part 5.a. --- Random Array')
 randomArray = arr_ints.getRandomArray(10000)
+
+bst.root = bst.insertRec(bst.root, Node(randomArray[0]))
+
+for n in randomArray[1:]:
+    bst.insertRec(bst.root, bst.Node(n))
+
+print('created bst from 10000 elements -- Recursive')
+
+root = insertIter(root, Node(randomArray[0]))
+for n in randomArray[1:]:
+    insertIter(root, Node(n))
+
+print('created avl tree from 10000 elements -- Iterative')
+
+# Part 5c
+print('\n\nPart 5.c. --- Random Array')
+randomArray = arr_ints.getRandomArray(10000)
+
+bst.root = bst.insertIter(bst.root, Node(randomArray[0]))
+
+for n in randomArray[1:]:
+    bst.insertIter(bst.root, bst.Node(n))
+
+print('created bst from 10000 elements -- Iterative')
+
+
+root = insertIter(root, Node(randomArray[0]))
+for n in randomArray[1:]:
+    insertIter(root, Node(n))
+print('created avl tree from 10000 elements -- Iterative')
+
+
+# Part 6b
+print('\n\nPart 6.b. --- Random Array')
+randomArray = arr_ints.getRandomArray(10000)
+
+bst.root = bst.insertIter(bst.root, Node(randomArray[0]))
+
+for n in randomArray[1:]:
+    bst.insertIter(bst.root, bst.Node(n))
+
+print('bst child traversal: ', bst.travCount)
+
+root = insertIter(root, Node(randomArray[0]))
+for n in randomArray[1:]:
+    insertIter(root, Node(n))
+
+print('avl child traversal: ', travCount)
+
+
+# Part 6c
+print('\n\nPart 6.c. --- Sorted Array')
 sortedArray = arr_ints.getSortedArray(10000)
 
-print('random:', randomArray)
-print('sorted:', sortedArray)
+bst.root = bst.insertIter(bst.root, Node(sortedArray[0]))
 
-# root = insertIter(root, Node(3))
-# printBst(root)
-# print()
-#
-# insertIter(root, Node(1))
-# printBst(root)
-# print()
-#
-# insertIter(root, Node(2))
-# printBst(root)
-# print()
-#
-# insertIter(root, Node(4))
-# printBst(root)
-# print()
-#
-# insertIter(root, Node(7))
-# printBst(root)
-# print()
-#
-# insertIter(root, Node(9))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# deleteIter(root, Node(4))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# insertIter(root, Node(10))
-# printBst(root)
-# print()
-# insertIter(root, Node(-1))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# insertIter(root, Node(11))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# insertIter(root, Node(-2))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# deleteIter(root, Node(-2))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# deleteIter(root, Node(-1))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
-#
-# deleteIter(root, Node(2))
-# printBst(root)
-# print()
-#
-# print('root: ', root.data)
+for n in sortedArray[1:]:
+    bst.insertIter(bst.root, bst.Node(n))
+
+print('bst child traversal: ', bst.travCount)
+
+root = insertIter(root, Node(sortedArray[0]))
+for n in sortedArray[1:]:
+    insertIter(root, Node(n))
+
+print('avl child traversal: ', travCount)

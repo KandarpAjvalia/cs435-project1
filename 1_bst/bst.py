@@ -1,4 +1,5 @@
 import sys
+import inspect
 
 # creating a structure of node
 class Node:
@@ -9,20 +10,35 @@ class Node:
 
 # Initializing node as null
 root = None
+stack = []
+size = 0
+travCount = 0
+
+
+def incrementTrav():
+    global travCount
+    travCount += 1
 
 
 # a function to insert a node in a bst recursively
 def insertRec(currentNode, nodeToInsert):
 
+    global size
     # base case if we reach a leaf node
     if currentNode is None:
+        # stackSize = len(inspect.stack())
+        # print('stack frame depth', stackSize)
+        # if size < stackSize:
+        #     size = stackSize
         return nodeToInsert
 
     # recursive step, go left down the tree if node to insert is smaller
     # than current, else go down ro the right if the node to insert is greer
     if nodeToInsert.data < currentNode.data:
+        incrementTrav()
         currentNode.left = insertRec(currentNode.left, nodeToInsert)
     else:
+        incrementTrav()
         currentNode.right = insertRec(currentNode.right, nodeToInsert)
 
     # return pointer of parent to the node we reached and inserted
@@ -49,6 +65,8 @@ def insertIter(root, nodeToInsert):
             curr = curr.left
         else:
             curr = curr.right
+
+        incrementTrav()
 
     # insert on left if element is smaller than parent,
     # else insert to the right
@@ -386,34 +404,3 @@ def printBst(root):
         printBst(root.left)
         print(root.data, end=' ')
         printBst(root.right)
-
-
-root = insertRec(root, Node(4))
-insertRec(root, Node(2))
-insertRec(root, Node(7))
-insertRec(root, Node(1))
-insertRec(root, Node(3))
-insertRec(root, Node(9))
-
-printBst(root)
-print()
-
-deleteRec(root, Node(4))
-printBst(root)
-print()
-
-deleteRec(root, Node(3))
-printBst(root)
-print()
-#
-# print('min Rec', findMinRec(root))
-# print('min Iter', findMinIter(root))
-#
-# print('max Rec', findMaxRec(root))
-# print('max Iter', findMaxIter(root))
-#
-# print('next iter', findNextIter(root, 5).data)
-# print('next Rec', findNextRec(root, 5).data)
-#
-# print('prev rec', findPrevRec(root, 5).data)
-# print('prev iter', findPrevIter(root, 5).data)
