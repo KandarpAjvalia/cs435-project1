@@ -1,14 +1,16 @@
 import random
 
+# a function that returns a random array
 def getRandomArray(n):
     distinct = set()
     returnList = []
-    while(len(distinct) != n):
+    while len(distinct) != n:
         randomNumber = random.randrange(1, n+1)
         if randomNumber not in distinct:
             distinct.add(randomNumber)
             returnList.append(randomNumber)
     return returnList
+
 
 def getSortedArray(n):
     returnList = []

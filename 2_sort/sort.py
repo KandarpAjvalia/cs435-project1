@@ -9,6 +9,7 @@ class Node:
 
 outputList = []
 
+# insert a node in the bst recursively
 def insertRec(currentNode, nodeToInsert):
     if currentNode is None:
         return nodeToInsert
@@ -19,6 +20,7 @@ def insertRec(currentNode, nodeToInsert):
     return currentNode
 
 
+# in-order traversal, instead of printing, we append to the output list
 def inOrder(root):
     if root:
         global outputList
@@ -26,11 +28,12 @@ def inOrder(root):
         outputList.append(root.data)
         inOrder(root.right)
 
+# creates a bst from a given list and returns a sorted list
 def sort(unsortedList):
     root = insertRec(None, Node(unsortedList[0]))
 
-    for i in range(1, len(unsortedList)):
-        insertRec(root, Node(unsortedList[i]))
+    for n in unsortedList[1:]:
+        insertRec(root, Node(n))
 
     inOrder(root)
 

@@ -58,12 +58,12 @@ def balanceFactor(node):
 
 def isBalanced(node):
     if node:
-        return abs(balanceFactor(node)) <= 1
+        return -1 <= balanceFactor(node) <= 1
     return 1
 
 
 def leftRotate(node):
-    # print('left rotate on: ', node.data)
+
     temp = node.right
     node.right = temp.left
     temp.left = node
@@ -74,7 +74,6 @@ def leftRotate(node):
     return temp
 
 def rightRotate(node):
-    # print('right rotate on: ', node.data)
 
     temp = node.left
     node.left = temp.right
@@ -85,8 +84,8 @@ def rightRotate(node):
 
     return temp
 
+
 def balance(node):
-    # print('balancing')
 
     bf = balanceFactor(node)
 
@@ -225,11 +224,11 @@ def deleteIter(currentNode, nodeToDelete):
             deleteIterHelper(currentNode)
             if not isBalanced(currentNode):
                 root = balance(currentNode)
-                return
+                return root
         if not isBalanced(currentNode):
             root = balance(currentNode)
             root.height = calcHeight(root)
-        return
+        return root
 
 
     temp = currentNode
@@ -237,6 +236,7 @@ def deleteIter(currentNode, nodeToDelete):
 
     stackSim = []
     path = []
+
 
     # if node is not a node, we just slide down to the node we want to delete
     while temp and temp.data != deletionData:
@@ -251,6 +251,10 @@ def deleteIter(currentNode, nodeToDelete):
         elif deletionData > temp.data:
             temp = temp.right
             path.append('R')
+
+    # if we don't find the node in
+    if temp is None:
+        return
 
     # check left and right nodes if they are empty,
     # set parent's left or right as None depending on condition
@@ -286,8 +290,8 @@ def deleteIter(currentNode, nodeToDelete):
     path.pop()
 
     prev = None
-    print(*stackSim)
-    print(path)
+    # print(*stackSim)
+    # print(path)
     # check balance factor for each parent
     for node in stackSim[::-1]:
         if not isFirst:
@@ -303,8 +307,6 @@ def deleteIter(currentNode, nodeToDelete):
         node.height = calcHeight(node)
     # print('prev data', prev.data)
     root = prev
-    # return pointer to the inserted element's parent
-    return parent
 
 
 # an iterative function to find the next node greater than a given node
@@ -404,14 +406,14 @@ def printBbst(root):
 print('Part 5.a. --- Random Array')
 randomArray = arr_ints.getRandomArray(10000)
 
-bst.root = bst.insertRec(bst.root, Node(randomArray[0]))
+bst.root = bst.insertRec(None, bst.Node(randomArray[0]))
 
 for n in randomArray[1:]:
     bst.insertRec(bst.root, bst.Node(n))
 
 print('created bst from 10000 elements -- Recursive')
 
-root = insertIter(root, Node(randomArray[0]))
+root = insertIter(None, Node(randomArray[0]))
 for n in randomArray[1:]:
     insertIter(root, Node(n))
 
@@ -421,7 +423,7 @@ print('created avl tree from 10000 elements -- Iterative')
 print('\n\nPart 5.c. --- Random Array')
 randomArray = arr_ints.getRandomArray(10000)
 
-bst.root = bst.insertIter(bst.root, Node(randomArray[0]))
+bst.root = bst.insertIter(None, bst.Node(randomArray[0]))
 
 for n in randomArray[1:]:
     bst.insertIter(bst.root, bst.Node(n))
@@ -429,7 +431,7 @@ for n in randomArray[1:]:
 print('created bst from 10000 elements -- Iterative')
 
 
-root = insertIter(root, Node(randomArray[0]))
+root = insertIter(None, Node(randomArray[0]))
 for n in randomArray[1:]:
     insertIter(root, Node(n))
 print('created avl tree from 10000 elements -- Iterative')
@@ -439,14 +441,14 @@ print('created avl tree from 10000 elements -- Iterative')
 print('\n\nPart 6.b. --- Random Array')
 randomArray = arr_ints.getRandomArray(10000)
 
-bst.root = bst.insertIter(bst.root, Node(randomArray[0]))
+bst.root = bst.insertIter(None, bst.Node(randomArray[0]))
 
 for n in randomArray[1:]:
     bst.insertIter(bst.root, bst.Node(n))
 
 print('bst child traversal: ', bst.travCount)
 
-root = insertIter(root, Node(randomArray[0]))
+root = insertIter(None, Node(randomArray[0]))
 for n in randomArray[1:]:
     insertIter(root, Node(n))
 
@@ -457,15 +459,20 @@ print('avl child traversal: ', travCount)
 print('\n\nPart 6.c. --- Sorted Array')
 sortedArray = arr_ints.getSortedArray(10000)
 
-bst.root = bst.insertIter(bst.root, Node(sortedArray[0]))
+bst.root = bst.insertIter(None, bst.Node(sortedArray[0]))
 
 for n in sortedArray[1:]:
     bst.insertIter(bst.root, bst.Node(n))
 
 print('bst child traversal: ', bst.travCount)
 
-root = insertIter(root, Node(sortedArray[0]))
+root = insertIter(None, Node(sortedArray[0]))
 for n in sortedArray[1:]:
     insertIter(root, Node(n))
 
 print('avl child traversal: ', travCount)
+
+
+# Extra Credit
+# 7.a.
+# Use the code from ../extracredit_credit(7).py

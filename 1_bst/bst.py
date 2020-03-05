@@ -10,11 +10,12 @@ class Node:
 
 # Initializing node as null
 root = None
-stack = []
-size = 0
+
+# keep track of how many times we go one level down
 travCount = 0
 
 
+# function to increment parent to child traversal count
 def incrementTrav():
     global travCount
     travCount += 1
@@ -23,22 +24,22 @@ def incrementTrav():
 # a function to insert a node in a bst recursively
 def insertRec(currentNode, nodeToInsert):
 
-    global size
     # base case if we reach a leaf node
     if currentNode is None:
-        # stackSize = len(inspect.stack())
-        # print('stack frame depth', stackSize)
-        # if size < stackSize:
-        #     size = stackSize
         return nodeToInsert
 
     # recursive step, go left down the tree if node to insert is smaller
     # than current, else go down ro the right if the node to insert is greer
     if nodeToInsert.data < currentNode.data:
+
+        # at this point we will go a level down
         incrementTrav()
+
         currentNode.left = insertRec(currentNode.left, nodeToInsert)
     else:
+        # at this point we will go a level down
         incrementTrav()
+
         currentNode.right = insertRec(currentNode.right, nodeToInsert)
 
     # return pointer of parent to the node we reached and inserted
@@ -177,7 +178,7 @@ def deleteIter(currentNode, nodeToDelete):
         # if there are two children of node, we make node the next bigger element of node as node
         elif currentNode.left and currentNode.right:
             deleteIterHelper(currentNode)
-        return
+        return root
 
 
     temp = currentNode
@@ -190,6 +191,9 @@ def deleteIter(currentNode, nodeToDelete):
             temp = temp.left
         elif deletionData > temp.data:
             temp = temp.right
+
+    if temp is None:
+        return
 
     # check left and right nodes if they are empty,
     # set parent's left or right as None depending on condition
