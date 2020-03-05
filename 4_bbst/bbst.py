@@ -473,6 +473,7 @@ for n in sortedArray[1:]:
 print('avl child traversal: ', travCount)
 
 
+
 # Extra Credit
 # 7.a.
 # Use the code from ../extracredit_credit(7).py
