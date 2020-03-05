@@ -104,6 +104,34 @@ def balance(node):
     return node
 
 
+# a function to insert a node in a bst recursively
+def insertRec(currentNode, nodeToInsert):
+
+    # base case if we reach a leaf node
+    if currentNode is None:
+        return nodeToInsert
+
+    # recursive step, go left down the tree if node to insert is smaller
+    # than current, else go down ro the right if the node to insert is greer
+    if nodeToInsert.data < currentNode.data:
+
+        # at this point we will go a level down
+        incrementTrav()
+
+        currentNode.left = insertRec(currentNode.left, nodeToInsert)
+    else:
+        # at this point we will go a level down
+        incrementTrav()
+
+        currentNode.right = insertRec(currentNode.right, nodeToInsert)
+
+    if not isBalanced(currentNode):
+        currentNode = balance(currentNode)
+
+    # return pointer of parent to the node we reached and inserted
+    return currentNode
+
+
 # a function to insert a node in a bst iteratively
 def insertIter(rootGiven, nodeToInsert):
     # if node is none, return pointer to the given node
@@ -159,6 +187,55 @@ def insertIter(rootGiven, nodeToInsert):
     root = prev
     # return pointer to the inserted element's parent
     return parent
+
+
+# a function to delete a node from bst recursively
+def deleteRec(currentNode, nodeToDelete):
+
+    # base case if we reach a node which is none
+    if currentNode is None:
+        return currentNode
+
+    deleteData = nodeToDelete.data
+    currData = currentNode.data
+
+    # go down left if node is smaller than current
+    if deleteData < currData:
+        currentNode.left = deleteRec(currentNode.left, nodeToDelete)
+
+    # go down right if node is greater than current
+    elif deleteData > currData:
+        currentNode.right = deleteRec(currentNode.right, nodeToDelete)
+
+    # if node is same as the one we want to delete
+    else:
+
+        # if right of node to be deleted is empty(no children)
+        if currentNode.right is None:
+            return currentNode.left
+
+        # if left of node to be deleted is empty(no children)
+        elif currentNode.left is None:
+            return currentNode.right
+
+        # we replace the node to be deleted with the next highest in the bst
+        # and then delete the next highest node
+        leftMost = currentNode.right
+        while leftMost.left is not None:
+            leftMost = leftMost.left
+        update = leftMost
+        currentNode.data = update.data
+
+        # we also delete the next highest node in bst
+        currentNode.right = deleteRec(currentNode.right, Node(update.data))
+
+    if not isBalanced(currentNode):
+        currentNode = balance(currentNode)
+
+    currentNode.height = calcHeight(currentNode)
+
+    # return pointer to the node
+    return currentNode
 
 
 def deleteIterHelper(currentNode):
@@ -428,6 +505,8 @@ bst.root = bst.insertIter(None, bst.Node(randomArray[0]))
 for n in randomArray[1:]:
     bst.insertIter(bst.root, bst.Node(n))
 
+
+
 print('created bst from 10000 elements -- Iterative')
 
 
@@ -477,3 +556,72 @@ print('avl child traversal: ', travCount)
 # Extra Credit
 # 7.a.
 # Use the code from ../extracredit_credit(7).py
+print('\n\nPart 7.a. --- Extra Credit')
+print('----------Random Array----------')
+randomArray = arr_ints.getRandomArray(10000)
+
+startBst = time.time()
+
+bst.root = bst.insertIter(None, bst.Node(randomArray[0]))
+
+for n in randomArray[1:]:
+    bst.insertIter(bst.root, bst.Node(n))
+
+for n in randomArray:
+    bst.deleteIter(bst.root, bst.Node(n))
+
+bstTime = time.time() - startBst
+print("BST random 10000 add and delete time --- %s seconds ---" % (bstTime))
+
+startAvl = time.time()
+
+root = insertIter(None, Node(randomArray[0]))
+
+for n in randomArray[1:]:
+    insertIter(root, Node(n))
+
+print()
+
+for n in randomArray:
+    root = deleteIter(root, Node(n))
+
+avlTime = time.time() - startAvl
+print("AVL random 10000 add and delete time --- %s seconds ---" % (avlTime))
+print()
+print("avl is ",(abs(avlTime - bstTime) / avlTime) * 100.0, "% slower than bst")
+
+print('\n')
+print('----------Sorted Array----------')
+
+sortedArray = arr_ints.getSortedArray(10000)
+
+startBst = time.time()
+
+bst.root = bst.insertIter(None, bst.Node(sortedArray[0]))
+
+for n in sortedArray[1:]:
+    bst.insertIter(bst.root, bst.Node(n))
+
+for n in sortedArray:
+    bst.deleteIter(bst.root, bst.Node(n))
+
+bstTime = time.time() - startBst
+print("BST sorted 10000 add and delete time --- %s seconds ---" % (bstTime))
+
+
+startAvl = time.time()
+
+root = insertIter(None, Node(sortedArray[0]))
+
+for n in sortedArray[1:]:
+    insertIter(root, Node(n))
+
+print()
+
+for n in sortedArray:
+    root = deleteIter(root, Node(n))
+
+avlTime = time.time() - startAvl
+print("AVL sorted 10000 add and delete time --- %s seconds ---" % (avlTime))
+print()
+print("bst is ",(abs(bstTime - avlTime) / bstTime) * 100.0, "% slower than avl")

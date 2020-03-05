@@ -1,40 +1,42 @@
-
-# Extra credit 7.a. use the below code inside bbst.py to see the results
+# Extra Credit
+# 7.a.
+# Use the code from ../extracredit_credit(7).py
 print('\n\nPart 7.a. --- Extra Credit')
-sortedArray = arr_ints.getsortedArray(200000)
+print('----------Random Array----------')
+randomArray = arr_ints.getRandomArray(10000)
 
 startBst = time.time()
 
-bst.root = bst.insertIter(None, bst.Node(sortedArray[0]))
+bst.root = bst.insertIter(None, bst.Node(randomArray[0]))
 
-for n in sortedArray[1:]:
+for n in randomArray[1:]:
     bst.insertIter(bst.root, bst.Node(n))
 
-for n in sortedArray:
+for n in randomArray:
     bst.deleteIter(bst.root, bst.Node(n))
 
 bstTime = time.time() - startBst
-print("BST 200000 add and delete time --- %s seconds ---" % (bstTime))
-
+print("BST random 10000 add and delete time --- %s seconds ---" % (bstTime))
 
 startAvl = time.time()
 
-root = insertIter(None, Node(sortedArray[0]))
+root = insertIter(None, Node(randomArray[0]))
 
-for n in sortedArray[1:]:
+for n in randomArray[1:]:
     insertIter(root, Node(n))
 
 print()
 
-for n in sortedArray:
+for n in randomArray:
     root = deleteIter(root, Node(n))
 
 avlTime = time.time() - startAvl
-print("AVL 200000 add and delete time --- %s seconds ---" % (avlTime))
+print("AVL random 10000 add and delete time --- %s seconds ---" % (avlTime))
 print()
-print("Avl is ",(abs(avlTime - bstTime) / avlTime) * 100.0, "% slower than bst")
+print("avl is ",(abs(avlTime - bstTime) / avlTime) * 100.0, "% slower than bst")
 
-
+print('\n')
+print('----------Sorted Array----------')
 
 sortedArray = arr_ints.getSortedArray(10000)
 
