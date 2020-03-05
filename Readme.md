@@ -5,7 +5,7 @@
   <h5>Using <code>#!/bin/python3</code></h5>
   <ul>
     <li>Code for each question resides inside its sub folder.</li>
-    <li>For problems 5 - 7, a screenshot is included to show the program running</li>
+    <li>For problems 5 - 7, a <a href="https://github.com/KandarpAjvalia/cs435-project1/blob/master/code_run.png">screenshot</a> is included to show the program running</li>
     <li>Better to run each test separately, meaning to run 5a comment all other tests and same for others </li>
   </ul>
 </div>
